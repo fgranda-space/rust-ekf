@@ -1,7 +1,9 @@
 // src/data_utils.rs
 use polars::datatypes::PlSmallStr;
 use polars::prelude::*;
+use std::error::Error;
 use std::fs::File;
+use std::path::Path;
 
 pub fn read_space_separated_file(
     path: &str,
@@ -33,4 +35,11 @@ pub fn read_space_separated_file(
         df.rename(&old_names[i], PlSmallStr::from(new_name))?;
     }
     Ok(df)
+}
+
+/// Saves a DataFrame to a CSV file.
+pub fn save_csv<P: AsRef<Path>>(df: &mut DataFrame, path: P) -> Result<(), Box<dyn Error>> {
+    let file = File::create(path)?;
+    CsvWriter::new(file).include_header(true).finish(df)?;
+    Ok(())
 }
