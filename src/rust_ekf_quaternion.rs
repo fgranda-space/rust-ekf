@@ -300,7 +300,7 @@ impl EKF {
 
     /// Get the fully updated state vector
     pub fn get_state(&self) -> Vector7 {
-        self.state.clone() // Return a copy of the state vector
+        self.state // Return a copy of the state vector
     }
 
 }
